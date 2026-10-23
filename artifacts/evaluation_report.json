@@ -1,0 +1,703 @@
+{
+  "evaluation_title": "Multi-Method Comparative Benchmark on Protein Kinase Inconsistency Detection",
+  "total_benchmark_cases": 44,
+  "synthetic_cases_count": 32,
+  "natural_cases_count": 12,
+  "methods_comparison": {
+    "sequence_similarity_baseline": {
+      "sample_size": 44,
+      "true_positives": 16,
+      "false_positives": 6,
+      "true_negatives": 12,
+      "false_negatives": 10,
+      "precision": 0.7273,
+      "recall": 0.6154,
+      "specificity": 0.6667,
+      "f1_score": 0.6667,
+      "accuracy": 0.6364
+    },
+    "esm2_embedding_anomaly": {
+      "sample_size": 44,
+      "true_positives": 0,
+      "false_positives": 0,
+      "true_negatives": 18,
+      "false_negatives": 26,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "f1_score": 0.0,
+      "accuracy": 0.4091
+    },
+    "kinase_biological_features": {
+      "sample_size": 44,
+      "true_positives": 5,
+      "false_positives": 1,
+      "true_negatives": 17,
+      "false_negatives": 21,
+      "precision": 0.8333,
+      "recall": 0.1923,
+      "specificity": 0.9444,
+      "f1_score": 0.3125,
+      "accuracy": 0.5
+    },
+    "evidence_aware_ensemble": {
+      "sample_size": 44,
+      "true_positives": 2,
+      "false_positives": 0,
+      "true_negatives": 18,
+      "false_negatives": 24,
+      "precision": 1.0,
+      "recall": 0.0769,
+      "specificity": 1.0,
+      "f1_score": 0.1429,
+      "accuracy": 0.4545
+    }
+  },
+  "synthetic_subset_performance": {
+    "sample_size": 32,
+    "true_positives": 0,
+    "false_positives": 0,
+    "true_negatives": 8,
+    "false_negatives": 24,
+    "precision": 0.0,
+    "recall": 0.0,
+    "specificity": 1.0,
+    "f1_score": 0.0,
+    "accuracy": 0.25
+  },
+  "natural_subset_performance": {
+    "sample_size": 12,
+    "true_positives": 2,
+    "false_positives": 0,
+    "true_negatives": 10,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "specificity": 1.0,
+    "f1_score": 1.0,
+    "accuracy": 1.0
+  },
+  "detailed_case_evaluations": [
+    {
+      "identifier": "Q07912",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.0624
+    },
+    {
+      "identifier": "O75716",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1212
+    },
+    {
+      "identifier": "O43353",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1024
+    },
+    {
+      "identifier": "Q9NZJ5",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.0928
+    },
+    {
+      "identifier": "P19525",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1007
+    },
+    {
+      "identifier": "Q05655",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.0602
+    },
+    {
+      "identifier": "Q14680",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.0575
+    },
+    {
+      "identifier": "Q13470",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.0608
+    },
+    {
+      "identifier": "Q6J9G0",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 1,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1507
+    },
+    {
+      "identifier": "Q6ZMQ8",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_A_REFERENCE",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1056
+    },
+    {
+      "identifier": "Q9Y616",
+      "ground_truth": "INCONSISTENT",
+      "category": "NATURAL_PSEUDOKINASE",
+      "type": "CATEGORY_B_NATURAL_EXCEPTION",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 1,
+        "ensemble": 1
+      },
+      "ensemble_priority": "MODERATE",
+      "contradiction_score": 0.4181
+    },
+    {
+      "identifier": "Q13418",
+      "ground_truth": "INCONSISTENT",
+      "category": "NATURAL_PSEUDOKINASE",
+      "type": "CATEGORY_B_NATURAL_EXCEPTION",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 1,
+        "ensemble": 1
+      },
+      "ensemble_priority": "MODERATE",
+      "contradiction_score": 0.5355
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_001",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3703
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_002",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1382
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_003",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 1,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.2
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_004",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3871
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_005",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 1,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1889
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_006",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1254
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_007",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1402
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_008",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 1,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1854
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_009",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3871
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_010",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1257
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_011",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3764
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_012",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3871
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_013",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3828
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_014",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1284
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_015",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3657
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_016",
+      "ground_truth": "INCONSISTENT",
+      "category": "INCONSISTENT_CATALYTIC",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.378
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_001",
+      "ground_truth": "INCONSISTENT",
+      "category": "LABEL_MISMATCH",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1324
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_002",
+      "ground_truth": "INCONSISTENT",
+      "category": "LABEL_MISMATCH",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.2012
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_003",
+      "ground_truth": "INCONSISTENT",
+      "category": "LABEL_MISMATCH",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1402
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_004",
+      "ground_truth": "INCONSISTENT",
+      "category": "LABEL_MISMATCH",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1417
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_005",
+      "ground_truth": "INCONSISTENT",
+      "category": "LABEL_MISMATCH",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1808
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_006",
+      "ground_truth": "INCONSISTENT",
+      "category": "LABEL_MISMATCH",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3305
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_007",
+      "ground_truth": "INCONSISTENT",
+      "category": "LABEL_MISMATCH",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3345
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_008",
+      "ground_truth": "INCONSISTENT",
+      "category": "LABEL_MISMATCH",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.2012
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_001",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.373
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_002",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.0853
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_003",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.379
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_004",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3748
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_005",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3492
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_006",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3835
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_007",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 1,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.3755
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_008",
+      "ground_truth": "CONGRUENT",
+      "category": "CONGRUENT",
+      "type": "CATEGORY_C_SYNTHETIC",
+      "predictions": {
+        "similarity": 0,
+        "embedding": 0,
+        "features": 0,
+        "ensemble": 0
+      },
+      "ensemble_priority": "LOW",
+      "contradiction_score": 0.1308
+    }
+  ],
+  "scientific_limitations": [
+    "Controlled synthetic motif disruptions provide proof-of-concept verification but cannot emulate all nuances of in vivo functional divergence.",
+    "High precision on synthetic datasets does not guarantee identical performance on ambiguous natural borderline pseudokinases.",
+    "False positives may highlight legitimate biological variants (atypical kinases) rather than clerical database errors."
+  ]
+}
