@@ -1,7 +1,8 @@
-# Scientific Methodology Report: The Annotation Contradiction Atlas
+# Scientific Methodology Report: The Annotation Contradiction Atlas (Version 2)
 
 **Project:** The Annotation Contradiction Atlas  
 **Discipline:** Bioinformatics & Computational Structural Biology  
+**Methodology Version:** 2.0.0  
 
 ---
 
@@ -16,9 +17,9 @@ We demonstrate an evidence-aware system combining deep language model representa
 
 ---
 
-## 2. Biological Background & Landmarked Architecture of Protein Kinases
+## 2. Biological Background & Conserved Architecture of Protein Kinases
 
-Human protein kinases (the "kinome") regulate virtually all cellular signal transduction cascades via transfer of the $\gamma$-phosphate of ATP to hydroxyl groups of target serine, threonine, or tyrosine residues. Structurally, conventional protein kinases share a conserved catalytic core of 12 subdomains folded into an N-terminal lobe and a C-terminal lobe.
+Human protein kinases (the "kinome") regulate virtually all cellular signal transduction cascades via transfer of the $\gamma$-phosphate of ATP to hydroxyl groups of target serine, threonine, or tyrosine residues. Conventional protein kinases share a conserved catalytic core of 12 subdomains folded into an N-terminal lobe and a C-terminal lobe.
 
 Within this conserved core, three catalytic motifs are critical:
 1. **VAIK Motif (Subdomain II):** Situated on the $\beta3$-strand. The core Lysine ($K$) forms ionic bonds with the $\alpha$- and $\beta$-phosphates of ATP, orienting the nucleotide for transfer.
@@ -52,19 +53,21 @@ We align query sequences against an independently characterized panel of referen
 - Functional class agreement (e.g. Tyrosine kinase vs Serine/Threonine kinase).
 
 ### Method B: Compact Protein Language Model Embeddings (ESM-2)
-We employ pretrained **ESM-2** (`esm2_t6_8M_UR50D` / `esm2_t12_35M_UR50D`), which captures deep contextual, structural, and evolutionary constraints without requiring homologous family multiple sequence alignments (MSAs).
+We employ pretrained **ESM-2** (`esm2_t6_8M_UR50D`), which captures deep contextual, structural, and evolutionary constraints without requiring homologous family multiple sequence alignments (MSAs).
 - **Pooling:** Mean-pooling across the sequence tokens, excluding special `<cls>`, `<eos>`, and padding tokens.
-- **Windowing:** Sequences exceeding the model context length (1,024 residues) undergo sliding-window pooling with 512-residue strides. For very large proteins (> 2,500 residues), up to 4 representative domain windows are pooled to maintain computational efficiency.
+- **Windowing:** Sequences exceeding the model context length (1,024 residues) undergo sliding-window pooling with 512-residue strides. For very large proteins (> 2,500 residues), representative domain windows are pooled to maintain computational efficiency.
 - **Artifact Caching:** 320-dimensional embedding vectors are stored in disk `.npy` binary artifacts linked to relational records.
 
-### Method C: Manifold Anomaly Detection
+### Method C: Manifold Anomaly Detection & Class Conditioning
 To assess whether a protein occupies an unusual region in the kinase manifold, we calculate:
 1. **Centroid Cosine Distance:** Distance to the geometric center of high-confidence reference kinases:
    $$d_{\text{centroid}} = 1.0 - \frac{\mathbf{u} \cdot \mathbf{c}}{\|\mathbf{u}\| \|\mathbf{c}\|}$$
 2. **$k$-Nearest Neighbors ($k$-NN) Distance:** Mean distance to the closest $k=5$ reference kinases in embedding space:
    $$d_{k\text{NN}} = \frac{1}{k} \sum_{i=1}^k d(\mathbf{u}, \mathbf{r}_i)$$
-3. **Calibrated Anomaly Score:**
-   $$A_{\text{emb}} = \min\left(1.0, \frac{0.4 \cdot d_{\text{centroid}} + 0.6 \cdot d_{k\text{NN}}}{0.80}\right)$$
+3. **Class-Conditioned Manifold Discordance:** When an assigned functional label is available (e.g. Tyrosine kinase), we compute distance to the assigned functional cluster versus alternative functional clusters. If a query sequence is markedly closer to an alternative functional manifold than to its assigned class, a functional discordance penalty is applied.
+4. **Empirically Calibrated Anomaly Score:**
+   $$A_{\text{emb}} = \min\left(1.0, \frac{0.4 \cdot d_{\text{centroid}} + 0.6 \cdot d_{k\text{NN}}}{\text{scale}} + P_{\text{discordance}}\right)$$
+   The threshold is calibrated on the 95th percentile of independent calibration controls (default $\approx 0.18$).
 
 ### Method D: Catalytic Feature Integrity
 We scan the sequence using regular expressions designed to capture canonical motifs and known variant signatures:
@@ -98,16 +101,51 @@ $$S = 0.35 \cdot A_{\text{emb}} + 0.25 \cdot A_{\text{sim}} + 0.25 \cdot A_{\tex
 
 ---
 
-## 6. Controlled Benchmark Design
+## 6. Scientific Benchmark Construction (Version 2)
 
-To avoid data leakage:
-- **Category A (Reference):** Experimentally characterized kinases (EGFR, SRC, AKT1, BRAF, CDK2, MAPK1).
-- **Category B (Natural Exceptions):** Documented human pseudokinases (VRK3, ILK).
-- **Category C (Controlled Synthetic Perturbations):**
-  - Catalytic lysine knockout ($VAIK \rightarrow VAIA$).
-  - Catalytic base knockout ($HRD \rightarrow HAA$).
-  - Metal binding knockout ($DFG \rightarrow AFG$).
-  - Functional label swaps (Tyrosine kinase $\leftrightarrow$ Serine/Threonine kinase).
-  - Unaltered positive controls.
+To guarantee scientific validity and eliminate the artificial metric inflation identified during audit:
 
-Synthetic examples are evaluated on independent splits and **never injected into the real biological database**. Performance on synthetic and natural subsets is reported separately.
+### Explicit Benchmark Categories
+- **Category A: High-Confidence Reference Controls (`CONGRUENT_REFERENCE`):**
+  10 characterized human kinases with experimentally verified phosphotransfer activity (EGFR, SRC, AKT1, BRAF, CDK2, MAPK1, ABL1, MET, JAK2, PRKACA). Ground truth: `is_inconsistent: False`.
+- **Category B: Natural Biological Exceptions (`NATURAL_EXCEPTION`):**
+  Documented human pseudokinases (VRK3, ILK). Ground truth: `is_inconsistent: False` (legitimate pseudokinases fulfilling regulatory/scaffolding roles; NOT clerical misannotations). Evaluated qualitatively/exploratorily.
+- **Category C: Controlled Synthetic Label Contradictions (`SYNTHETIC_LABEL_CONTRADICTION`):**
+  Controlled functional label swaps between Tyrosine kinase and Serine/threonine kinase annotations, holding sequences unaltered. Ground truth: `is_inconsistent: True`.
+- **Category D: Controlled Synthetic Sequence Perturbations (`SYNTHETIC_SEQUENCE_PERTURBATION`):**
+  Controlled catalytic motif alterations (catalytic lysine knockout $VAIK \rightarrow VAIA$, catalytic base knockout $HRD \rightarrow HAA$, metal binding knockout $DFG \rightarrow AFG$). Ground truth: `is_inconsistent: True`.
+- **Unaltered Synthetic Controls (`CONGRUENT_CONTROL`):**
+  Unaltered sequences paired with native verified annotations as negative controls. Ground truth: `is_inconsistent: False`.
+
+---
+
+## 7. Calibration vs. Testing Partitioning (Zero Test Leakage)
+
+To prevent data snooping and circular validation:
+1. **Calibration Partition (50%):** 5 Reference controls, 8 motif knockouts, 4 label swaps, 4 unaltered controls. Used exclusively to calibrate empirical anomaly thresholds (e.g. 95th percentile of controls for ESM-2).
+2. **Independent Test Partition (50%):** 5 Reference controls, 8 motif knockouts, 4 label swaps, 4 unaltered controls (21 cases total). Evaluated using frozen thresholds derived during calibration.
+3. **Exploratory Partition:** Category B pseudokinases evaluated separately without conflation into binary classification accuracy.
+
+---
+
+## 8. Multi-Task Evaluation Design
+
+The benchmark evaluates four distinct scientific tasks:
+- **Task 1: Synthetic Label Contradiction Detection:** Evaluates Category C vs Controls.
+- **Task 2: Synthetic Sequence Perturbation Detection:** Evaluates Category D vs Controls.
+- **Task 3: Natural Biological Exception Characterization:** Evaluates Category B (VRK3, ILK) for correct atypical motif detection and biological exception explanations.
+- **Task 4: Confirmed Annotation Error Status:** Reports public database limitations transparently.
+
+---
+
+## 9. Reproducibility Procedures
+
+All benchmark runs can be reproduced deterministically:
+```bash
+python scripts/run_evaluation.py --seed 42 --num-synthetic 32
+```
+Output artifacts:
+- `artifacts/evaluation_report_v2.json`: Master evaluation JSON with all task metrics and detailed cases.
+- `artifacts/evaluation_summary_v2.csv`: Summary metrics table across methods.
+- `artifacts/benchmark_diagnostics_v2.json`: Score distributions and sensitivity sweep diagnostics.
+- `artifacts/benchmark_audit.md`: Scientific audit trail and methodology rationale.

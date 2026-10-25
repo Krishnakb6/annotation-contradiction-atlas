@@ -213,18 +213,39 @@ def run_all_diagnostics():
         print(f"  [FAIL] Streamlit User Interface check failed: {e}")
         failed += 1
 
-    # 7. BENCHMARK ARTIFACTS
-    test_section("7. Benchmark Artifacts & Evaluation Report")
+    # 7. BENCHMARK ARTIFACTS (VERSION 2)
+    test_section("7. Benchmark Artifacts & Multi-Task Evaluation Report (v2)")
     try:
-        report_file = Path("artifacts/evaluation_report.json")
-        assert report_file.exists(), "evaluation_report.json missing!"
-        with open(report_file, "r", encoding="utf-8") as f:
+        report_v2_file = Path("artifacts/evaluation_report_v2.json")
+        summary_v2_file = Path("artifacts/evaluation_summary_v2.csv")
+        diagnostics_v2_file = Path("artifacts/benchmark_diagnostics_v2.json")
+        audit_file = Path("artifacts/benchmark_audit.md")
+
+        assert report_v2_file.exists(), "evaluation_report_v2.json missing!"
+        assert summary_v2_file.exists(), "evaluation_summary_v2.csv missing!"
+        assert diagnostics_v2_file.exists(), "benchmark_diagnostics_v2.json missing!"
+        assert audit_file.exists(), "benchmark_audit.md missing!"
+
+        with open(report_v2_file, "r", encoding="utf-8") as f:
             rep = json.load(f)
-        assert "methods_comparison" in rep
-        assert rep["total_benchmark_cases"] > 0
-        print(f"  [OK] Benchmark Report: {rep['total_benchmark_cases']} cases evaluated ({rep.get('synthetic_cases_count')} synthetic, {rep.get('natural_cases_count')} natural)")
-        print(f"  [OK] Ensemble precision on natural cases: {rep.get('natural_subset_performance', {}).get('precision', 0)*100:.1f}%")
-        print("  --> Benchmark artifacts check PASSED")
+
+        assert "task_evaluations" in rep
+        assert "overall_independent_test_evaluation" in rep
+        ds = rep.get("dataset_summary", {})
+        print(f"  [OK] Benchmark Report v2: {ds.get('total_benchmark_cases')} total cases ({ds.get('independent_test_cases_count')} test, {ds.get('calibration_cases_count')} calibration, {ds.get('natural_exceptions_count')} natural)")
+        
+        test_ens = rep["overall_independent_test_evaluation"]["methods_comparison"]["evidence_aware_ensemble"]
+        print(f"  [OK] Independent Test Ensemble: Precision={test_ens['precision_display']}, Recall={test_ens['recall_display']}, F1={test_ens['f1_score_display']}")
+
+        # Verify task separation
+        task1 = rep["task_evaluations"]["task1_label_contradiction_detection"]
+        task2 = rep["task_evaluations"]["task2_sequence_perturbation_detection"]
+        task3 = rep["task_evaluations"]["task3_natural_biological_exceptions"]
+        print(f"  [OK] Task 1 (Label Contradictions): {task1['sample_size']} cases evaluated")
+        print(f"  [OK] Task 2 (Sequence Perturbations): {task2['sample_size']} cases evaluated")
+        print(f"  [OK] Task 3 (Natural Pseudokinases): {len(task3['evaluated_cases'])} cases analyzed as biological exceptions")
+
+        print("  --> Benchmark artifacts v2 check PASSED")
         passed += 1
     except Exception as e:
         print(f"  [FAIL] Benchmark artifact check failed: {e}")

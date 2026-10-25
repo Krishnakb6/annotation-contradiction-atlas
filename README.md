@@ -89,9 +89,11 @@ streamlit run app.py
    - Filter review candidates by specific contradiction triggers (e.g., *Broken catalytic motifs*, *ESM-2 embedding outlier*, *Purely computational provenance*).
    - **Comparative Inspection:** Select any candidate kinase to compare directly against its closest characterized reference kinase, displaying pairwise sequence identity, alignment metrics, motif status, and functional concordance side-by-side.
 
-5. **Empirical Benchmark & Evaluation:**
-   - Empirical evaluation across all 4 computational methods (Precision, Recall, F1, Specificity, Accuracy).
-   - Ensemble Confusion Matrix and performance breakdown comparing Natural Reference Kinases (100% Precision) vs Controlled Synthetic Perturbations.
+5. **Empirical Benchmark & Evaluation (Version 2):**
+   - Multi-task empirical evaluation across all 4 computational methods (Precision, Recall, F1, Specificity, Accuracy).
+   - Distinct task separation: Task 1 (Synthetic Label Contradictions), Task 2 (Synthetic Sequence Perturbations), Task 3 (Natural Biological Exceptions / Pseudokinases), Task 4 (Real-World Public Database Status).
+   - Zero-leakage dataset partitioning: Thresholds calibrated strictly on Calibration instances and evaluated on an independent frozen Test partition.
+   - Interactive scikit-learn oriented confusion matrices and ESM-2 score distribution diagnostics.
 
 6. **Scientific Methodology & Documentation:**
    - Detailed scientific documentation of catalytic triad biochemistry (VAIK, HRD, DFG), scoring formulas, pseudokinase differentiation, and evidence tiering.
@@ -111,11 +113,15 @@ python scripts/fetch_data.py --max-records 500 --init-db
 python scripts/run_analysis.py --limit 150
 ```
 
-### Run the Benchmark Evaluation
+### Run the Benchmark Evaluation (Version 2)
 ```bash
 python scripts/run_evaluation.py --num-synthetic 32
 ```
-*Outputs evaluation metrics and saves `artifacts/evaluation_report.json`.*
+*Outputs multi-task evaluation metrics and generates:*
+- `artifacts/evaluation_report_v2.json`: Master evaluation JSON with all task metrics and detailed cases.
+- `artifacts/evaluation_summary_v2.csv`: Summary metrics table across methods.
+- `artifacts/benchmark_diagnostics_v2.json`: Score distributions and sensitivity sweep diagnostics.
+- `artifacts/benchmark_audit.md`: Scientific audit trail and methodology rationale.
 
 ### Run System Health Diagnostic
 ```bash

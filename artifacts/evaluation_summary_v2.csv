@@ -1,0 +1,5 @@
+Method,Sample Size,Actual Pos,Actual Neg,TP,FP,TN,FN,Precision,Recall,F1-Score,Specificity,Accuracy
+Sequence Similarity Baseline,21,12,9,6,2,7,6,0.7500,0.5000,0.6000,0.7778,0.6190
+Esm2 Embedding Anomaly,21,12,9,2,1,8,10,0.6667,0.1667,0.2667,0.8889,0.4762
+Kinase Biological Features,21,12,9,1,0,9,11,1.0000,0.0833,0.1538,1.0000,0.4762
+Evidence Aware Ensemble,21,12,9,2,1,8,10,0.6667,0.1667,0.2667,0.8889,0.4762

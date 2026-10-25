@@ -32,12 +32,13 @@ def test_calculate_binary_metrics_toy_example():
 
 
 def test_metric_calculation_zero_division():
-    # All negatives predicted negative
+    # All negatives predicted negative: zero positive predictions made
     y_true = [0, 0, 0]
     y_pred = [0, 0, 0]
     metrics = calculate_binary_metrics(y_true, y_pred)
-    assert metrics["precision"] == 0.0
-    assert metrics["recall"] == 0.0
+    assert metrics["precision"] is None
+    assert "Undefined" in metrics["precision_display"]
+    assert metrics["recall"] is None or metrics["recall"] == 0.0
     assert metrics["specificity"] == 1.0
     assert metrics["accuracy"] == 1.0
 
@@ -59,7 +60,16 @@ def test_synthetic_benchmark_generation():
     # Ensure all have synthetic identifiers and valid category
     for c in cases:
         assert c["synthetic_identifier"].startswith("SYNTH_")
-        assert c["case_type"] == "CATEGORY_C_SYNTHETIC"
-        assert c["ground_truth_category"] in ("INCONSISTENT_CATALYTIC", "LABEL_MISMATCH", "CONGRUENT")
+        assert c["case_type"] in (
+            "CATEGORY_C_SYNTHETIC_LABEL",
+            "CATEGORY_D_SYNTHETIC_SEQUENCE",
+            "CATEGORY_C_SYNTHETIC_CONTROL",
+        )
+        assert c["ground_truth_category"] in (
+            "SYNTHETIC_SEQUENCE_PERTURBATION",
+            "SYNTHETIC_LABEL_CONTRADICTION",
+            "CONGRUENT_CONTROL",
+        )
         assert isinstance(c["is_inconsistent"], bool)
         assert c["random_seed"] == 42
+        assert c["dataset_split"] in ("CALIBRATION", "TEST")

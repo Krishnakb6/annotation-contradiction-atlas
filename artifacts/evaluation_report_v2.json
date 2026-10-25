@@ -1,0 +1,1545 @@
+{
+  "evaluation_title": "Scientific Benchmark Evaluation Report (Version 2)",
+  "evaluation_version": "2.0.0",
+  "run_identifier": "RUN_V2_SEED_42",
+  "timestamp": "2026-10-25T12:00:00Z",
+  "model_identifier": "facebook/esm2_t6_8M_UR50D",
+  "random_seed": 42,
+  "frozen_thresholds": {
+    "similarity_anomaly_threshold": 0.4,
+    "feature_anomaly_threshold": 0.3,
+    "esm2_anomaly_threshold": 0.1814,
+    "ensemble_review_priority_threshold": "HIGH_OR_MODERATE (Score >= 0.40)"
+  },
+  "dataset_summary": {
+    "total_benchmark_cases": 44,
+    "calibration_cases_count": 21,
+    "independent_test_cases_count": 21,
+    "natural_exceptions_count": 2,
+    "reference_panel_size": 20
+  },
+  "category_definitions": {
+    "CATEGORY_A_REFERENCE": "High-confidence experimentally characterized human kinase reference controls (CONGRUENT_REFERENCE).",
+    "CATEGORY_B_NATURAL_EXCEPTION": "Natural pseudokinases and divergent kinases requiring biological contextualization (NATURAL_EXCEPTION).",
+    "CATEGORY_C_SYNTHETIC_LABEL": "Controlled functional label swaps between Tyrosine kinase and Ser/Thr kinase activities (SYNTHETIC_LABEL_CONTRADICTION).",
+    "CATEGORY_D_SYNTHETIC_SEQUENCE": "Controlled catalytic triad mutations (VAIK, HRD, DFG knockouts) testing sensitivity to catalytic disruptions (SYNTHETIC_SEQUENCE_PERTURBATION).",
+    "CATEGORY_C_SYNTHETIC_CONTROL": "Unaltered canonical sequence and annotation negative controls (CONGRUENT_CONTROL)."
+  },
+  "task_evaluations": {
+    "task1_label_contradiction_detection": {
+      "description": "Evaluation of detection accuracy for controlled functional label swaps (Category C) vs Controls.",
+      "sample_size": 13,
+      "methods": {
+        "sequence_similarity_baseline": {
+          "task_name": "Sequence Similarity",
+          "sample_size": 13,
+          "actual_positives": 4,
+          "actual_negatives": 9,
+          "predicted_positives": 5,
+          "predicted_negatives": 8,
+          "true_positives": 3,
+          "false_positives": 2,
+          "true_negatives": 7,
+          "false_negatives": 1,
+          "precision": 0.6,
+          "precision_display": "0.6000",
+          "recall": 0.75,
+          "recall_display": "0.7500",
+          "specificity": 0.7778,
+          "specificity_display": "0.7778",
+          "f1_score": 0.6667,
+          "f1_score_display": "0.6667",
+          "accuracy": 0.7692,
+          "accuracy_display": "0.7692",
+          "confusion_matrix": {
+            "actual_positive": {
+              "predicted_positive": 3,
+              "predicted_negative": 1
+            },
+            "actual_negative": {
+              "predicted_positive": 2,
+              "predicted_negative": 7
+            }
+          },
+          "matrix_array": [
+            [
+              7,
+              2
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+          "positive_label_meaning": "Inconsistent / Review Candidate",
+          "negative_label_meaning": "Congruent / Control"
+        },
+        "esm2_embedding_anomaly": {
+          "task_name": "ESM-2 Embedding Anomaly",
+          "sample_size": 13,
+          "actual_positives": 4,
+          "actual_negatives": 9,
+          "predicted_positives": 3,
+          "predicted_negatives": 10,
+          "true_positives": 2,
+          "false_positives": 1,
+          "true_negatives": 8,
+          "false_negatives": 2,
+          "precision": 0.6667,
+          "precision_display": "0.6667",
+          "recall": 0.5,
+          "recall_display": "0.5000",
+          "specificity": 0.8889,
+          "specificity_display": "0.8889",
+          "f1_score": 0.5714,
+          "f1_score_display": "0.5714",
+          "accuracy": 0.7692,
+          "accuracy_display": "0.7692",
+          "confusion_matrix": {
+            "actual_positive": {
+              "predicted_positive": 2,
+              "predicted_negative": 2
+            },
+            "actual_negative": {
+              "predicted_positive": 1,
+              "predicted_negative": 8
+            }
+          },
+          "matrix_array": [
+            [
+              8,
+              1
+            ],
+            [
+              2,
+              2
+            ]
+          ],
+          "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+          "positive_label_meaning": "Inconsistent / Review Candidate",
+          "negative_label_meaning": "Congruent / Control"
+        },
+        "kinase_biological_features": {
+          "task_name": "Kinase Features",
+          "sample_size": 13,
+          "actual_positives": 4,
+          "actual_negatives": 9,
+          "predicted_positives": 0,
+          "predicted_negatives": 13,
+          "true_positives": 0,
+          "false_positives": 0,
+          "true_negatives": 9,
+          "false_negatives": 4,
+          "precision": null,
+          "precision_display": "Undefined (0 positive predictions)",
+          "recall": 0.0,
+          "recall_display": "0.0000",
+          "specificity": 1.0,
+          "specificity_display": "1.0000",
+          "f1_score": null,
+          "f1_score_display": "Undefined (P and R undefined)",
+          "accuracy": 0.6923,
+          "accuracy_display": "0.6923",
+          "confusion_matrix": {
+            "actual_positive": {
+              "predicted_positive": 0,
+              "predicted_negative": 4
+            },
+            "actual_negative": {
+              "predicted_positive": 0,
+              "predicted_negative": 9
+            }
+          },
+          "matrix_array": [
+            [
+              9,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+          "positive_label_meaning": "Inconsistent / Review Candidate",
+          "negative_label_meaning": "Congruent / Control"
+        },
+        "evidence_aware_ensemble": {
+          "task_name": "Evidence-Aware Ensemble",
+          "sample_size": 13,
+          "actual_positives": 4,
+          "actual_negatives": 9,
+          "predicted_positives": 1,
+          "predicted_negatives": 12,
+          "true_positives": 0,
+          "false_positives": 1,
+          "true_negatives": 8,
+          "false_negatives": 4,
+          "precision": 0.0,
+          "precision_display": "0.0000",
+          "recall": 0.0,
+          "recall_display": "0.0000",
+          "specificity": 0.8889,
+          "specificity_display": "0.8889",
+          "f1_score": null,
+          "f1_score_display": "0.0000",
+          "accuracy": 0.6154,
+          "accuracy_display": "0.6154",
+          "confusion_matrix": {
+            "actual_positive": {
+              "predicted_positive": 0,
+              "predicted_negative": 4
+            },
+            "actual_negative": {
+              "predicted_positive": 1,
+              "predicted_negative": 8
+            }
+          },
+          "matrix_array": [
+            [
+              8,
+              1
+            ],
+            [
+              4,
+              0
+            ]
+          ],
+          "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+          "positive_label_meaning": "Inconsistent / Review Candidate",
+          "negative_label_meaning": "Congruent / Control"
+        }
+      }
+    },
+    "task2_sequence_perturbation_detection": {
+      "description": "Evaluation of detection accuracy for catalytic motif knockouts (Category D) vs Controls.",
+      "sample_size": 17,
+      "methods": {
+        "sequence_similarity_baseline": {
+          "task_name": "Sequence Similarity",
+          "sample_size": 17,
+          "actual_positives": 8,
+          "actual_negatives": 9,
+          "predicted_positives": 5,
+          "predicted_negatives": 12,
+          "true_positives": 3,
+          "false_positives": 2,
+          "true_negatives": 7,
+          "false_negatives": 5,
+          "precision": 0.6,
+          "precision_display": "0.6000",
+          "recall": 0.375,
+          "recall_display": "0.3750",
+          "specificity": 0.7778,
+          "specificity_display": "0.7778",
+          "f1_score": 0.4615,
+          "f1_score_display": "0.4615",
+          "accuracy": 0.5882,
+          "accuracy_display": "0.5882",
+          "confusion_matrix": {
+            "actual_positive": {
+              "predicted_positive": 3,
+              "predicted_negative": 5
+            },
+            "actual_negative": {
+              "predicted_positive": 2,
+              "predicted_negative": 7
+            }
+          },
+          "matrix_array": [
+            [
+              7,
+              2
+            ],
+            [
+              5,
+              3
+            ]
+          ],
+          "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+          "positive_label_meaning": "Inconsistent / Review Candidate",
+          "negative_label_meaning": "Congruent / Control"
+        },
+        "esm2_embedding_anomaly": {
+          "task_name": "ESM-2 Embedding Anomaly",
+          "sample_size": 17,
+          "actual_positives": 8,
+          "actual_negatives": 9,
+          "predicted_positives": 1,
+          "predicted_negatives": 16,
+          "true_positives": 0,
+          "false_positives": 1,
+          "true_negatives": 8,
+          "false_negatives": 8,
+          "precision": 0.0,
+          "precision_display": "0.0000",
+          "recall": 0.0,
+          "recall_display": "0.0000",
+          "specificity": 0.8889,
+          "specificity_display": "0.8889",
+          "f1_score": null,
+          "f1_score_display": "0.0000",
+          "accuracy": 0.4706,
+          "accuracy_display": "0.4706",
+          "confusion_matrix": {
+            "actual_positive": {
+              "predicted_positive": 0,
+              "predicted_negative": 8
+            },
+            "actual_negative": {
+              "predicted_positive": 1,
+              "predicted_negative": 8
+            }
+          },
+          "matrix_array": [
+            [
+              8,
+              1
+            ],
+            [
+              8,
+              0
+            ]
+          ],
+          "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+          "positive_label_meaning": "Inconsistent / Review Candidate",
+          "negative_label_meaning": "Congruent / Control"
+        },
+        "kinase_biological_features": {
+          "task_name": "Kinase Features",
+          "sample_size": 17,
+          "actual_positives": 8,
+          "actual_negatives": 9,
+          "predicted_positives": 1,
+          "predicted_negatives": 16,
+          "true_positives": 1,
+          "false_positives": 0,
+          "true_negatives": 9,
+          "false_negatives": 7,
+          "precision": 1.0,
+          "precision_display": "1.0000",
+          "recall": 0.125,
+          "recall_display": "0.1250",
+          "specificity": 1.0,
+          "specificity_display": "1.0000",
+          "f1_score": 0.2222,
+          "f1_score_display": "0.2222",
+          "accuracy": 0.5882,
+          "accuracy_display": "0.5882",
+          "confusion_matrix": {
+            "actual_positive": {
+              "predicted_positive": 1,
+              "predicted_negative": 7
+            },
+            "actual_negative": {
+              "predicted_positive": 0,
+              "predicted_negative": 9
+            }
+          },
+          "matrix_array": [
+            [
+              9,
+              0
+            ],
+            [
+              7,
+              1
+            ]
+          ],
+          "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+          "positive_label_meaning": "Inconsistent / Review Candidate",
+          "negative_label_meaning": "Congruent / Control"
+        },
+        "evidence_aware_ensemble": {
+          "task_name": "Evidence-Aware Ensemble",
+          "sample_size": 17,
+          "actual_positives": 8,
+          "actual_negatives": 9,
+          "predicted_positives": 3,
+          "predicted_negatives": 14,
+          "true_positives": 2,
+          "false_positives": 1,
+          "true_negatives": 8,
+          "false_negatives": 6,
+          "precision": 0.6667,
+          "precision_display": "0.6667",
+          "recall": 0.25,
+          "recall_display": "0.2500",
+          "specificity": 0.8889,
+          "specificity_display": "0.8889",
+          "f1_score": 0.3636,
+          "f1_score_display": "0.3636",
+          "accuracy": 0.5882,
+          "accuracy_display": "0.5882",
+          "confusion_matrix": {
+            "actual_positive": {
+              "predicted_positive": 2,
+              "predicted_negative": 6
+            },
+            "actual_negative": {
+              "predicted_positive": 1,
+              "predicted_negative": 8
+            }
+          },
+          "matrix_array": [
+            [
+              8,
+              1
+            ],
+            [
+              6,
+              2
+            ]
+          ],
+          "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+          "positive_label_meaning": "Inconsistent / Review Candidate",
+          "negative_label_meaning": "Congruent / Control"
+        }
+      }
+    },
+    "task3_natural_biological_exceptions": {
+      "description": "Exploratory characterization of naturally occurring pseudokinases. Not treated as binary clerical error.",
+      "evaluated_cases": [
+        {
+          "accession": "Q9Y616",
+          "gene_name": "VRK3",
+          "assigned_annotation": "Inactive serine/threonine-protein kinase VRK3",
+          "classification": "BIOLOGICAL_EXCEPTION (Pseudokinase)",
+          "detected_motifs": {
+            "canonical": 1,
+            "variant": 2,
+            "absent": 0,
+            "summary": "Atypical motif variant(s): HRD (HGA), DFG (SSG). Motif spacing or relative order deviates from canonical kinase domain organization."
+          },
+          "review_priority": "MODERATE",
+          "contradiction_score": 0.4537,
+          "biological_caveat": "Lacks canonical phosphotransfer triad due to natural evolutionary divergence. Functions as non-catalytic regulator/scaffold. Labeled as legitimate biological exception, NOT a clerical misannotation."
+        },
+        {
+          "accession": "Q13418",
+          "gene_name": "ILK",
+          "assigned_annotation": "Integrin-linked protein kinase (pseudokinase)",
+          "classification": "BIOLOGICAL_EXCEPTION (Pseudokinase)",
+          "detected_motifs": {
+            "canonical": 1,
+            "variant": 2,
+            "absent": 0,
+            "summary": "Atypical motif variant(s): HRD (FKK), DFG (DFF). Motif spacing or relative order deviates from canonical kinase domain organization."
+          },
+          "review_priority": "HIGH",
+          "contradiction_score": 0.7167,
+          "biological_caveat": "Lacks canonical phosphotransfer triad due to natural evolutionary divergence. Functions as non-catalytic regulator/scaffold. Labeled as legitimate biological exception, NOT a clerical misannotation."
+        }
+      ]
+    },
+    "task4_real_world_annotation_limitations": {
+      "description": "Real-world confirmed annotation error status in public reference databases.",
+      "status": "UNVALIDATED_IN_PUBLIC_DATABASES",
+      "scientific_caveat": "No independently validated, high-throughput ground truth of confirmed clerical misannotations exists in public protein databases. Real-world misannotation accuracy cannot be claimed without independent experimental verification. Current results evaluate controlled sensitivity, not public database error rates."
+    }
+  },
+  "overall_independent_test_evaluation": {
+    "description": "Comprehensive comparative performance on the independent frozen TEST partition (Tasks 1 & 2 combined).",
+    "sample_size": 21,
+    "methods_comparison": {
+      "sequence_similarity_baseline": {
+        "task_name": "Sequence Similarity",
+        "sample_size": 21,
+        "actual_positives": 12,
+        "actual_negatives": 9,
+        "predicted_positives": 8,
+        "predicted_negatives": 13,
+        "true_positives": 6,
+        "false_positives": 2,
+        "true_negatives": 7,
+        "false_negatives": 6,
+        "precision": 0.75,
+        "precision_display": "0.7500",
+        "recall": 0.5,
+        "recall_display": "0.5000",
+        "specificity": 0.7778,
+        "specificity_display": "0.7778",
+        "f1_score": 0.6,
+        "f1_score_display": "0.6000",
+        "accuracy": 0.619,
+        "accuracy_display": "0.6190",
+        "confusion_matrix": {
+          "actual_positive": {
+            "predicted_positive": 6,
+            "predicted_negative": 6
+          },
+          "actual_negative": {
+            "predicted_positive": 2,
+            "predicted_negative": 7
+          }
+        },
+        "matrix_array": [
+          [
+            7,
+            2
+          ],
+          [
+            6,
+            6
+          ]
+        ],
+        "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+        "positive_label_meaning": "Inconsistent / Review Candidate",
+        "negative_label_meaning": "Congruent / Control"
+      },
+      "esm2_embedding_anomaly": {
+        "task_name": "ESM-2 Embedding Anomaly",
+        "sample_size": 21,
+        "actual_positives": 12,
+        "actual_negatives": 9,
+        "predicted_positives": 3,
+        "predicted_negatives": 18,
+        "true_positives": 2,
+        "false_positives": 1,
+        "true_negatives": 8,
+        "false_negatives": 10,
+        "precision": 0.6667,
+        "precision_display": "0.6667",
+        "recall": 0.1667,
+        "recall_display": "0.1667",
+        "specificity": 0.8889,
+        "specificity_display": "0.8889",
+        "f1_score": 0.2667,
+        "f1_score_display": "0.2667",
+        "accuracy": 0.4762,
+        "accuracy_display": "0.4762",
+        "confusion_matrix": {
+          "actual_positive": {
+            "predicted_positive": 2,
+            "predicted_negative": 10
+          },
+          "actual_negative": {
+            "predicted_positive": 1,
+            "predicted_negative": 8
+          }
+        },
+        "matrix_array": [
+          [
+            8,
+            1
+          ],
+          [
+            10,
+            2
+          ]
+        ],
+        "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+        "positive_label_meaning": "Inconsistent / Review Candidate",
+        "negative_label_meaning": "Congruent / Control"
+      },
+      "kinase_biological_features": {
+        "task_name": "Kinase Features",
+        "sample_size": 21,
+        "actual_positives": 12,
+        "actual_negatives": 9,
+        "predicted_positives": 1,
+        "predicted_negatives": 20,
+        "true_positives": 1,
+        "false_positives": 0,
+        "true_negatives": 9,
+        "false_negatives": 11,
+        "precision": 1.0,
+        "precision_display": "1.0000",
+        "recall": 0.0833,
+        "recall_display": "0.0833",
+        "specificity": 1.0,
+        "specificity_display": "1.0000",
+        "f1_score": 0.1538,
+        "f1_score_display": "0.1538",
+        "accuracy": 0.4762,
+        "accuracy_display": "0.4762",
+        "confusion_matrix": {
+          "actual_positive": {
+            "predicted_positive": 1,
+            "predicted_negative": 11
+          },
+          "actual_negative": {
+            "predicted_positive": 0,
+            "predicted_negative": 9
+          }
+        },
+        "matrix_array": [
+          [
+            9,
+            0
+          ],
+          [
+            11,
+            1
+          ]
+        ],
+        "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+        "positive_label_meaning": "Inconsistent / Review Candidate",
+        "negative_label_meaning": "Congruent / Control"
+      },
+      "evidence_aware_ensemble": {
+        "task_name": "Evidence-Aware Ensemble",
+        "sample_size": 21,
+        "actual_positives": 12,
+        "actual_negatives": 9,
+        "predicted_positives": 3,
+        "predicted_negatives": 18,
+        "true_positives": 2,
+        "false_positives": 1,
+        "true_negatives": 8,
+        "false_negatives": 10,
+        "precision": 0.6667,
+        "precision_display": "0.6667",
+        "recall": 0.1667,
+        "recall_display": "0.1667",
+        "specificity": 0.8889,
+        "specificity_display": "0.8889",
+        "f1_score": 0.2667,
+        "f1_score_display": "0.2667",
+        "accuracy": 0.4762,
+        "accuracy_display": "0.4762",
+        "confusion_matrix": {
+          "actual_positive": {
+            "predicted_positive": 2,
+            "predicted_negative": 10
+          },
+          "actual_negative": {
+            "predicted_positive": 1,
+            "predicted_negative": 8
+          }
+        },
+        "matrix_array": [
+          [
+            8,
+            1
+          ],
+          [
+            10,
+            2
+          ]
+        ],
+        "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+        "positive_label_meaning": "Inconsistent / Review Candidate",
+        "negative_label_meaning": "Congruent / Control"
+      }
+    }
+  },
+  "calibration_split_performance": {
+    "description": "Performance on the calibration partition used for threshold tuning.",
+    "sample_size": 21,
+    "methods_comparison": {
+      "sequence_similarity_baseline": {
+        "task_name": "Sequence Similarity",
+        "sample_size": 21,
+        "actual_positives": 12,
+        "actual_negatives": 9,
+        "predicted_positives": 12,
+        "predicted_negatives": 9,
+        "true_positives": 8,
+        "false_positives": 4,
+        "true_negatives": 5,
+        "false_negatives": 4,
+        "precision": 0.6667,
+        "precision_display": "0.6667",
+        "recall": 0.6667,
+        "recall_display": "0.6667",
+        "specificity": 0.5556,
+        "specificity_display": "0.5556",
+        "f1_score": 0.6667,
+        "f1_score_display": "0.6667",
+        "accuracy": 0.619,
+        "accuracy_display": "0.6190",
+        "confusion_matrix": {
+          "actual_positive": {
+            "predicted_positive": 8,
+            "predicted_negative": 4
+          },
+          "actual_negative": {
+            "predicted_positive": 4,
+            "predicted_negative": 5
+          }
+        },
+        "matrix_array": [
+          [
+            5,
+            4
+          ],
+          [
+            4,
+            8
+          ]
+        ],
+        "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+        "positive_label_meaning": "Inconsistent / Review Candidate",
+        "negative_label_meaning": "Congruent / Control"
+      },
+      "esm2_embedding_anomaly": {
+        "task_name": "ESM-2 Embedding Anomaly",
+        "sample_size": 21,
+        "actual_positives": 12,
+        "actual_negatives": 9,
+        "predicted_positives": 4,
+        "predicted_negatives": 17,
+        "true_positives": 3,
+        "false_positives": 1,
+        "true_negatives": 8,
+        "false_negatives": 9,
+        "precision": 0.75,
+        "precision_display": "0.7500",
+        "recall": 0.25,
+        "recall_display": "0.2500",
+        "specificity": 0.8889,
+        "specificity_display": "0.8889",
+        "f1_score": 0.375,
+        "f1_score_display": "0.3750",
+        "accuracy": 0.5238,
+        "accuracy_display": "0.5238",
+        "confusion_matrix": {
+          "actual_positive": {
+            "predicted_positive": 3,
+            "predicted_negative": 9
+          },
+          "actual_negative": {
+            "predicted_positive": 1,
+            "predicted_negative": 8
+          }
+        },
+        "matrix_array": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            3
+          ]
+        ],
+        "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+        "positive_label_meaning": "Inconsistent / Review Candidate",
+        "negative_label_meaning": "Congruent / Control"
+      },
+      "kinase_biological_features": {
+        "task_name": "Kinase Features",
+        "sample_size": 21,
+        "actual_positives": 12,
+        "actual_negatives": 9,
+        "predicted_positives": 3,
+        "predicted_negatives": 18,
+        "true_positives": 2,
+        "false_positives": 1,
+        "true_negatives": 8,
+        "false_negatives": 10,
+        "precision": 0.6667,
+        "precision_display": "0.6667",
+        "recall": 0.1667,
+        "recall_display": "0.1667",
+        "specificity": 0.8889,
+        "specificity_display": "0.8889",
+        "f1_score": 0.2667,
+        "f1_score_display": "0.2667",
+        "accuracy": 0.4762,
+        "accuracy_display": "0.4762",
+        "confusion_matrix": {
+          "actual_positive": {
+            "predicted_positive": 2,
+            "predicted_negative": 10
+          },
+          "actual_negative": {
+            "predicted_positive": 1,
+            "predicted_negative": 8
+          }
+        },
+        "matrix_array": [
+          [
+            8,
+            1
+          ],
+          [
+            10,
+            2
+          ]
+        ],
+        "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+        "positive_label_meaning": "Inconsistent / Review Candidate",
+        "negative_label_meaning": "Congruent / Control"
+      },
+      "evidence_aware_ensemble": {
+        "task_name": "Evidence-Aware Ensemble",
+        "sample_size": 21,
+        "actual_positives": 12,
+        "actual_negatives": 9,
+        "predicted_positives": 5,
+        "predicted_negatives": 16,
+        "true_positives": 3,
+        "false_positives": 2,
+        "true_negatives": 7,
+        "false_negatives": 9,
+        "precision": 0.6,
+        "precision_display": "0.6000",
+        "recall": 0.25,
+        "recall_display": "0.2500",
+        "specificity": 0.7778,
+        "specificity_display": "0.7778",
+        "f1_score": 0.3529,
+        "f1_score_display": "0.3529",
+        "accuracy": 0.4762,
+        "accuracy_display": "0.4762",
+        "confusion_matrix": {
+          "actual_positive": {
+            "predicted_positive": 3,
+            "predicted_negative": 9
+          },
+          "actual_negative": {
+            "predicted_positive": 2,
+            "predicted_negative": 7
+          }
+        },
+        "matrix_array": [
+          [
+            7,
+            2
+          ],
+          [
+            9,
+            3
+          ]
+        ],
+        "matrix_orientation": "Rows: Actual [0: Neg, 1: Pos], Columns: Predicted [0: Neg, 1: Pos]",
+        "positive_label_meaning": "Inconsistent / Review Candidate",
+        "negative_label_meaning": "Congruent / Control"
+      }
+    }
+  },
+  "esm2_embedding_diagnostics": {
+    "evaluated_sample_count": 42,
+    "reference_panel_size": 20,
+    "current_anomaly_threshold": 0.1814,
+    "category_distributions": {
+      "CONGRUENT_REFERENCE": {
+        "count": 10,
+        "mean": 0.1101,
+        "std": 0.0373,
+        "min": 0.0675,
+        "p25": 0.0841,
+        "median": 0.1013,
+        "p75": 0.1175,
+        "p95": 0.1772,
+        "max": 0.1986
+      },
+      "SYNTHETIC_SEQUENCE_PERTURBATION": {
+        "count": 16,
+        "mean": 0.124,
+        "std": 0.03,
+        "min": 0.0805,
+        "p25": 0.1018,
+        "median": 0.1199,
+        "p75": 0.1457,
+        "p95": 0.1699,
+        "max": 0.1947
+      },
+      "SYNTHETIC_LABEL_CONTRADICTION": {
+        "count": 8,
+        "mean": 0.2016,
+        "std": 0.0906,
+        "min": 0.0754,
+        "p25": 0.1304,
+        "median": 0.183,
+        "p75": 0.3066,
+        "p95": 0.3083,
+        "max": 0.3083
+      },
+      "CONGRUENT_CONTROL": {
+        "count": 8,
+        "mean": 0.1305,
+        "std": 0.035,
+        "min": 0.0674,
+        "p25": 0.1193,
+        "median": 0.1255,
+        "p75": 0.1387,
+        "p95": 0.1839,
+        "max": 0.2016
+      }
+    },
+    "threshold_sensitivity_sweep": [
+      {
+        "threshold_cutoff": 0.1,
+        "positive_predictions": 31,
+        "positive_rate": 0.7381
+      },
+      {
+        "threshold_cutoff": 0.15,
+        "positive_predictions": 10,
+        "positive_rate": 0.2381
+      },
+      {
+        "threshold_cutoff": 0.2,
+        "positive_predictions": 5,
+        "positive_rate": 0.119
+      },
+      {
+        "threshold_cutoff": 0.25,
+        "positive_predictions": 3,
+        "positive_rate": 0.0714
+      },
+      {
+        "threshold_cutoff": 0.3,
+        "positive_predictions": 3,
+        "positive_rate": 0.0714
+      },
+      {
+        "threshold_cutoff": 0.4,
+        "positive_predictions": 0,
+        "positive_rate": 0.0
+      },
+      {
+        "threshold_cutoff": 0.5,
+        "positive_predictions": 0,
+        "positive_rate": 0.0
+      },
+      {
+        "threshold_cutoff": 0.6,
+        "positive_predictions": 0,
+        "positive_rate": 0.0
+      }
+    ]
+  },
+  "detailed_case_evaluations": [
+    {
+      "identifier": "O75716",
+      "accession": "O75716",
+      "gene_name": "STK16",
+      "case_type": "CATEGORY_A_REFERENCE",
+      "ground_truth_category": "CONGRUENT_REFERENCE",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "Membrane-associated protein kinase that phosphorylates on serine and threonine residues. In vitro substrates include DRG1, ENO1 and EIF4EBP1. Also autophosphorylates. May be involved in secretory vesicle trafficking or intracellular signaling. May ha",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 1,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1986,
+        "embedding_raw_distance": 0.0695,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.1528,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "High-confidence experimentally characterized human kinase reference control."
+    },
+    {
+      "identifier": "Q9NZJ5",
+      "accession": "Q9NZJ5",
+      "gene_name": "EIF2AK3",
+      "case_type": "CATEGORY_A_REFERENCE",
+      "ground_truth_category": "CONGRUENT_REFERENCE",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "Metabolic-stress sensing protein kinase that phosphorylates the alpha subunit of eukaryotic translation initiation factor 2 (EIF2S1/eIF-2-alpha) in response to various stress, such as unfolded protein response (UPR) (PubMed:10026192, PubMed:10677345,",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.0675,
+        "embedding_raw_distance": 0.0236,
+        "feature_anomaly": 0.15,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.0986,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "High-confidence experimentally characterized human kinase reference control."
+    },
+    {
+      "identifier": "Q05655",
+      "accession": "Q05655",
+      "gene_name": "PRKCD",
+      "case_type": "CATEGORY_A_REFERENCE",
+      "ground_truth_category": "CONGRUENT_REFERENCE",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "Calcium-independent, phospholipid- and diacylglycerol (DAG)-dependent serine/threonine-protein kinase that plays contrasting roles in cell death and cell survival by functioning as a pro-apoptotic protein during DNA damage-induced apoptosis, but acti",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.0994,
+        "embedding_raw_distance": 0.0348,
+        "feature_anomaly": 0.0,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.0723,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "High-confidence experimentally characterized human kinase reference control."
+    },
+    {
+      "identifier": "Q13470",
+      "accession": "Q13470",
+      "gene_name": "TNK1",
+      "case_type": "CATEGORY_A_REFERENCE",
+      "ground_truth_category": "CONGRUENT_REFERENCE",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "Involved in negative regulation of cell growth. Has tumor suppressor properties. Plays a negative regulatory role in the Ras-MAPK pathway. May function in signaling pathways utilized broadly during fetal development and more selectively in adult tiss",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1033,
+        "embedding_raw_distance": 0.0361,
+        "feature_anomaly": 0.0,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.0737,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "High-confidence experimentally characterized human kinase reference control."
+    },
+    {
+      "identifier": "Q6ZMQ8",
+      "accession": "Q6ZMQ8",
+      "gene_name": "AATK",
+      "case_type": "CATEGORY_A_REFERENCE",
+      "ground_truth_category": "CONGRUENT_REFERENCE",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "May be involved in neuronal differentiation",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.151,
+        "embedding_raw_distance": 0.0529,
+        "feature_anomaly": 0.15,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.1278,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "High-confidence experimentally characterized human kinase reference control."
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_002",
+      "accession": "Q13470",
+      "gene_name": "TNK1",
+      "case_type": "CATEGORY_D_SYNTHETIC_SEQUENCE",
+      "ground_truth_category": "SYNTHETIC_SEQUENCE_PERTURBATION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "Involved in negative regulation of cell growth. Has tumor suppressor properties. Plays a negative regulatory role in the Ras-MAPK pathway. May function in signaling pathways utilized broadly during fetal development and more selectively in adult tiss",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 0.9938,
+        "similarity_anomaly": 0.0062,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1034,
+        "embedding_raw_distance": 0.0362,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.1586,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Deliberately mutated HRD -> HAA (catalytic_base_aspartate_knockout) breaking essential conserved catalytic residue."
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_004",
+      "accession": "P49137",
+      "gene_name": "MAPKAPK2",
+      "case_type": "CATEGORY_D_SYNTHETIC_SEQUENCE",
+      "ground_truth_category": "SYNTHETIC_SEQUENCE_PERTURBATION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "Stress-activated serine/threonine-protein kinase involved in cytokine production, endocytosis, reorganization of the cytoskeleton, cell migration, cell cycle control, chromatin remodeling, DNA damage response and transcriptional regulation. Following",
+      "predictions": {
+        "sequence_similarity": 1,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 1
+      },
+      "scores": {
+        "sequence_identity": 0.0239,
+        "similarity_anomaly": 0.9761,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1457,
+        "embedding_raw_distance": 0.051,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.4158,
+        "review_priority": "MODERATE"
+      },
+      "label_rationale": "Deliberately mutated HRD -> HAA (catalytic_base_aspartate_knockout) breaking essential conserved catalytic residue."
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_006",
+      "accession": "P08581",
+      "gene_name": "MET",
+      "case_type": "CATEGORY_D_SYNTHETIC_SEQUENCE",
+      "ground_truth_category": "SYNTHETIC_SEQUENCE_PERTURBATION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "Receptor tyrosine kinase that transduces signals from the extracellular matrix into the cytoplasm by binding to hepatocyte growth factor/HGF ligand. Regulates many physiological processes including proliferation, scattering, morphogenesis and surviva",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.0844,
+        "embedding_raw_distance": 0.0295,
+        "feature_anomaly": 0.15,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.142,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Deliberately mutated HRD -> HAA (catalytic_base_aspartate_knockout) breaking essential conserved catalytic residue."
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_008",
+      "accession": "Q6J9G0",
+      "gene_name": "STYK1",
+      "case_type": "CATEGORY_D_SYNTHETIC_SEQUENCE",
+      "ground_truth_category": "SYNTHETIC_SEQUENCE_PERTURBATION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "Probable tyrosine protein-kinase, which has strong transforming capabilities on a variety of cell lines. When overexpressed, it can also induce tumor cell invasion as well as metastasis in distant organs. May act by activating both MAP kinase and pho",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 1,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 0.9817,
+        "similarity_anomaly": 0.0183,
+        "label_concordant": true,
+        "embedding_anomaly": 0.0922,
+        "embedding_raw_distance": 0.0323,
+        "feature_anomaly": 0.3667,
+        "canonical_motif_count": 1,
+        "variant_motif_count": 2,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.2035,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Deliberately mutated native -> AAAA (core_segment_knockout) breaking essential conserved catalytic residue."
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_010",
+      "accession": "Q14680",
+      "gene_name": "MELK",
+      "case_type": "CATEGORY_D_SYNTHETIC_SEQUENCE",
+      "ground_truth_category": "SYNTHETIC_SEQUENCE_PERTURBATION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "Serine/threonine-protein kinase involved in various processes such as cell cycle regulation, self-renewal of stem cells, apoptosis and splicing regulation. Has a broad substrate specificity; phosphorylates BCL2L14, CDC25B, MAP3K5/ASK1 and ZNF622. Act",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 0.9964,
+        "similarity_anomaly": 0.0036,
+        "label_concordant": true,
+        "embedding_anomaly": 0.0805,
+        "embedding_raw_distance": 0.0282,
+        "feature_anomaly": 0.15,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.1416,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Deliberately mutated VAIK -> VAIA (catalytic_lysine_knockout) breaking essential conserved catalytic residue."
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_012",
+      "accession": "P49137",
+      "gene_name": "MAPKAPK2",
+      "case_type": "CATEGORY_D_SYNTHETIC_SEQUENCE",
+      "ground_truth_category": "SYNTHETIC_SEQUENCE_PERTURBATION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "Stress-activated serine/threonine-protein kinase involved in cytokine production, endocytosis, reorganization of the cytoskeleton, cell migration, cell cycle control, chromatin remodeling, DNA damage response and transcriptional regulation. Following",
+      "predictions": {
+        "sequence_similarity": 1,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 1
+      },
+      "scores": {
+        "sequence_identity": 0.0239,
+        "similarity_anomaly": 0.9761,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1457,
+        "embedding_raw_distance": 0.051,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.4158,
+        "review_priority": "MODERATE"
+      },
+      "label_rationale": "Deliberately mutated HRD -> HAA (catalytic_base_aspartate_knockout) breaking essential conserved catalytic residue."
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_014",
+      "accession": "Q05655",
+      "gene_name": "PRKCD",
+      "case_type": "CATEGORY_D_SYNTHETIC_SEQUENCE",
+      "ground_truth_category": "SYNTHETIC_SEQUENCE_PERTURBATION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "Calcium-independent, phospholipid- and diacylglycerol (DAG)-dependent serine/threonine-protein kinase that plays contrasting roles in cell death and cell survival by functioning as a pro-apoptotic protein during DNA damage-induced apoptosis, but acti",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 0.9956,
+        "similarity_anomaly": 0.0044,
+        "label_concordant": true,
+        "embedding_anomaly": 0.097,
+        "embedding_raw_distance": 0.0339,
+        "feature_anomaly": 0.15,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.1476,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Deliberately mutated DFG -> AFG (metal_binding_aspartate_knockout) breaking essential conserved catalytic residue."
+    },
+    {
+      "identifier": "SYNTH_MOTIF_42_016",
+      "accession": "Q9BXM7",
+      "gene_name": "PINK1",
+      "case_type": "CATEGORY_D_SYNTHETIC_SEQUENCE",
+      "ground_truth_category": "SYNTHETIC_SEQUENCE_PERTURBATION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "Serine/threonine-protein kinase which acts as a sensor of mitochondrial damage and protects against mitochondrial dysfunction during cellular stress (PubMed:40080546). It phosphorylates mitochondrial proteins to coordinate mitochondrial quality contr",
+      "predictions": {
+        "sequence_similarity": 1,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 0.0349,
+        "similarity_anomaly": 0.9651,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1041,
+        "embedding_raw_distance": 0.0364,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.3985,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Deliberately mutated HRD -> HAA (catalytic_base_aspartate_knockout) breaking essential conserved catalytic residue."
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_002",
+      "accession": "O75716",
+      "gene_name": "STK16",
+      "case_type": "CATEGORY_C_SYNTHETIC_LABEL",
+      "ground_truth_category": "SYNTHETIC_LABEL_CONTRADICTION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "protein-tyrosine kinase activity",
+      "predictions": {
+        "sequence_similarity": 1,
+        "esm2_anomaly": 1,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": false,
+        "embedding_anomaly": 0.3083,
+        "embedding_raw_distance": 0.0695,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.2787,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Controlled functional label swap: original was 'Membrane-associated protein kinase that phosphorylates on serine and threonine residues. In vitro substrates include DRG1, ENO1 and EIF4EBP1. Also autophosphorylates. May be involved in secretory vesicle trafficking or intracellular signaling. May ha', swapped to 'protein-tyrosine kinase activity'. Swapped true Serine/threonine kinase annotation to Tyrosine kinase."
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_004",
+      "accession": "Q7Z695",
+      "gene_name": "ADCK2",
+      "case_type": "CATEGORY_C_SYNTHETIC_LABEL",
+      "ground_truth_category": "SYNTHETIC_LABEL_CONTRADICTION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "protein-tyrosine kinase activity",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1362,
+        "embedding_raw_distance": 0.0477,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.1685,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Controlled functional label swap: original was 'The function of this protein is not yet clear. It is not known if it has protein kinase activity and what type of substrate it would phosphorylate (Ser, Thr or Tyr) (Probable). Involved in the mitochondrial import of CoQ precursors, plays a role in m', swapped to 'protein-tyrosine kinase activity'. Swapped true Serine/threonine kinase annotation to Tyrosine kinase."
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_006",
+      "accession": "Q76MJ5",
+      "gene_name": "ERN2",
+      "case_type": "CATEGORY_C_SYNTHETIC_LABEL",
+      "ground_truth_category": "SYNTHETIC_LABEL_CONTRADICTION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "protein-tyrosine kinase activity",
+      "predictions": {
+        "sequence_similarity": 1,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 0.0472,
+        "similarity_anomaly": 0.9528,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1129,
+        "embedding_raw_distance": 0.0395,
+        "feature_anomaly": 0.0,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.3527,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Controlled functional label swap: original was 'Induces translational repression through 28S ribosomal RNA cleavage in response to ER stress. Pro-apoptotic. Appears to play no role in the unfolded-protein response, unlike closely related proteins', swapped to 'protein-tyrosine kinase activity'. Swapped true Serine/threonine kinase annotation to Tyrosine kinase."
+    },
+    {
+      "identifier": "SYNTH_LABEL_42_008",
+      "accession": "O75716",
+      "gene_name": "STK16",
+      "case_type": "CATEGORY_C_SYNTHETIC_LABEL",
+      "ground_truth_category": "SYNTHETIC_LABEL_CONTRADICTION",
+      "dataset_split": "TEST",
+      "is_inconsistent": true,
+      "functional_label": "protein-tyrosine kinase activity",
+      "predictions": {
+        "sequence_similarity": 1,
+        "esm2_anomaly": 1,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": false,
+        "embedding_anomaly": 0.3083,
+        "embedding_raw_distance": 0.0695,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.2787,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Controlled functional label swap: original was 'Membrane-associated protein kinase that phosphorylates on serine and threonine residues. In vitro substrates include DRG1, ENO1 and EIF4EBP1. Also autophosphorylates. May be involved in secretory vesicle trafficking or intracellular signaling. May ha', swapped to 'protein-tyrosine kinase activity'. Swapped true Serine/threonine kinase annotation to Tyrosine kinase."
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_002",
+      "accession": "P07949",
+      "gene_name": "RET",
+      "case_type": "CATEGORY_C_SYNTHETIC_CONTROL",
+      "ground_truth_category": "CONGRUENT_CONTROL",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "Receptor tyrosine-protein kinase involved in numerous cellular mechanisms including cell proliferation, neuronal navigation, cell migration, and cell differentiation in response to glia cell line-derived growth family factors (GDNF, NRTN, ARTN, PSPN ",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.0674,
+        "embedding_raw_distance": 0.0236,
+        "feature_anomaly": 0.0,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.0986,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Unaltered canonical kinase sequence paired with verified annotation as negative control."
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_004",
+      "accession": "P09769",
+      "gene_name": "FGR",
+      "case_type": "CATEGORY_C_SYNTHETIC_CONTROL",
+      "ground_truth_category": "CONGRUENT_CONTROL",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "Non-receptor tyrosine-protein kinase that transmits signals from cell surface receptors devoid of kinase activity and contributes to the regulation of immune responses, including neutrophil, monocyte, macrophage and mast cell functions, cytoskeleton ",
+      "predictions": {
+        "sequence_similarity": 1,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 0.026,
+        "similarity_anomaly": 0.974,
+        "label_concordant": true,
+        "embedding_anomaly": 0.123,
+        "embedding_raw_distance": 0.0431,
+        "feature_anomaly": 0.15,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.399,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Unaltered canonical kinase sequence paired with verified annotation as negative control."
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_006",
+      "accession": "Q86UX6",
+      "gene_name": "STK32C",
+      "case_type": "CATEGORY_C_SYNTHETIC_CONTROL",
+      "ground_truth_category": "CONGRUENT_CONTROL",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "L-seryl-[protein] + ATP = O-phospho-L-seryl-[protein] + ADP + H(+)",
+      "predictions": {
+        "sequence_similarity": 1,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 1
+      },
+      "scores": {
+        "sequence_identity": 0.0276,
+        "similarity_anomaly": 0.9724,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1279,
+        "embedding_raw_distance": 0.0448,
+        "feature_anomaly": 0.1833,
+        "canonical_motif_count": 2,
+        "variant_motif_count": 1,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.4087,
+        "review_priority": "MODERATE"
+      },
+      "label_rationale": "Unaltered canonical kinase sequence paired with verified annotation as negative control."
+    },
+    {
+      "identifier": "SYNTH_CONTROL_42_008",
+      "accession": "O15146",
+      "gene_name": "MUSK",
+      "case_type": "CATEGORY_C_SYNTHETIC_CONTROL",
+      "ground_truth_category": "CONGRUENT_CONTROL",
+      "dataset_split": "TEST",
+      "is_inconsistent": false,
+      "functional_label": "Receptor tyrosine kinase which plays a central role in the formation and the maintenance of the neuromuscular junction (NMJ), the synapse between the motor neuron and the skeletal muscle (PubMed:25537362). Recruitment of AGRIN by LRP4 to the MUSK sig",
+      "predictions": {
+        "sequence_similarity": 0,
+        "esm2_anomaly": 0,
+        "kinase_features": 0,
+        "evidence_ensemble": 0
+      },
+      "scores": {
+        "sequence_identity": 1.0,
+        "similarity_anomaly": 0.0,
+        "label_concordant": true,
+        "embedding_anomaly": 0.1195,
+        "embedding_raw_distance": 0.0418,
+        "feature_anomaly": 0.15,
+        "canonical_motif_count": 3,
+        "variant_motif_count": 0,
+        "absent_motif_count": 0,
+        "contradiction_score": 0.1543,
+        "review_priority": "LOW"
+      },
+      "label_rationale": "Unaltered canonical kinase sequence paired with verified annotation as negative control."
+    }
+  ],
+  "scientific_limitations": [
+    "Global mean-pooled ESM-2 embeddings (8M) are dominated by tertiary fold homology; point mutations in long sequences produce small cosine shifts (<0.001).",
+    "Unsupervised sequence representations cannot detect label discordance unless conditioned on functional class annotations.",
+    "Sequence similarity baseline outperforms embeddings for label swaps because alignment directly matches homologous residues with known experimental labels.",
+    "Pseudokinases represent legitimate evolutionary exceptions, not database errors."
+  ]
+}
