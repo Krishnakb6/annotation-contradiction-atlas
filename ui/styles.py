@@ -100,12 +100,20 @@ CUSTOM_CSS = """
 """
 
 
-def render_priority_badge(priority: str) -> str:
-    """Returns HTML badge for review priority."""
+def render_priority_badge(priority: str, is_exception: bool = False) -> str:
+    """Returns HTML badge for review priority or exception characterization."""
     p_upper = (priority or "LOW").upper()
+    if is_exception:
+        return f'<span class="badge-priority-moderate" style="background-color: #EFF6FF; color: #1D4ED8; border: 1px solid #93C5FD; font-weight: 600;">{p_upper} (EXCEPTION)</span>'
     if p_upper == "HIGH":
         return '<span class="badge-priority-high">HIGH REVIEW PRIORITY</span>'
     elif p_upper == "MODERATE":
         return '<span class="badge-priority-moderate">MODERATE REVIEW PRIORITY</span>'
     else:
         return '<span class="badge-priority-low">LOW REVIEW PRIORITY</span>'
+
+
+def render_exception_badge(classification: str = "BIOLOGICAL EXCEPTION") -> str:
+    """Returns HTML badge for biological exceptions / pseudokinases."""
+    return f'<span class="badge-priority-moderate" style="background-color: #EFF6FF; color: #1D4ED8; border: 1px solid #93C5FD; font-weight: 600;">🧬 {classification}</span>'
+

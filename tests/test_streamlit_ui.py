@@ -23,6 +23,19 @@ def test_priority_badge_rendering():
     assert "badge-priority-low" in badge_low
     assert "LOW REVIEW PRIORITY" in badge_low
 
+    badge_ex = render_priority_badge("HIGH", is_exception=True)
+    assert "HIGH (EXCEPTION)" in badge_ex
+
+
+def test_exception_badge_rendering():
+    """Verify HTML badge for biological exceptions."""
+    from ui.styles import render_exception_badge
+    badge = render_exception_badge("BIOLOGICAL EXCEPTION (Pseudokinase)")
+    assert "BIOLOGICAL EXCEPTION" in badge
+    assert "#EFF6FF" in badge
+    assert "#1D4ED8" in badge
+
+
 
 def test_custom_css_high_contrast_properties():
     """Verify that CSS defines high contrast and explicit text colors for sequence viewers."""

@@ -281,3 +281,126 @@ def test_regression_no_artificial_natural_subset_perfection():
         t3 = data.get("task_evaluations", {}).get("task3_natural_biological_exceptions", {})
         assert "methods" not in t3, "Task 3 must be exploratory exception characterization, not binary precision/recall"
         assert "evaluated_cases" in t3
+
+
+# 17. Biological Exceptions Excluded from Suspected-Conflict Queue by Default
+def test_biological_exceptions_excluded_from_ordinary_queue_by_default():
+    """Verify that biological exceptions (pseudokinases) are excluded from ordinary suspected conflict queue by default."""
+    from services.contradiction_scoring import is_biological_exception, filter_suspected_conflicts
+    from ui.contradiction_explorer import get_explorer_candidates
+
+    suspected_conflicts, _ = get_explorer_candidates()
+
+    # None of the candidates in suspected_conflicts should be biological exceptions
+    for candidate in suspected_conflicts:
+        assert not is_biological_exception(candidate), f"Biological exception {candidate} found in ordinary conflict queue"
+
+    # Direct test of filter_suspected_conflicts
+    mixed_candidates = [
+        {"accession": "P00533", "gene_name": "EGFR", "classification": "SUSPECTED_CONFLICT", "flag_reason": "Missing motif"},
+        {"accession": "Q9Y616", "gene_name": "VRK3", "classification": "BIOLOGICAL_EXCEPTION (Pseudokinase)", "flag_reason": "Biological exception / Pseudokinase candidate"},
+        {"accession": "Q13418", "gene_name": "ILK", "classification": "BIOLOGICAL_EXCEPTION (Pseudokinase)", "flag_reason": "Biological exception / Pseudokinase candidate"},
+        {"accession": "P12931", "gene_name": "SRC", "classification": "SUSPECTED_CONFLICT", "flag_reason": "ESM-2 outlier"},
+    ]
+
+    default_queue = filter_suspected_conflicts(mixed_candidates, include_exceptions=False)
+    assert len(default_queue) == 2
+    queue_accessions = [c["accession"] for c in default_queue]
+    assert "P00533" in queue_accessions
+    assert "P12931" in queue_accessions
+    assert "Q9Y616" not in queue_accessions
+    assert "Q13418" not in queue_accessions
+
+    # When include_exceptions=True, all candidates are preserved
+    full_queue = filter_suspected_conflicts(mixed_candidates, include_exceptions=True)
+    assert len(full_queue) == 4
+
+
+# 18. VRK3 and ILK Accessible in Biological-Exceptions Section
+def test_vrk3_and_ilk_accessible_in_biological_exceptions_section():
+    """Verify that VRK3 and ILK remain accessible in the biological-exceptions section with motif explanations and diagnostic scores."""
+    from services.contradiction_scoring import is_biological_exception, load_benchmark_exceptions
+    from ui.contradiction_explorer import get_explorer_candidates
+
+    # Verify classification logic
+    vrk3_meta = {"accession": "Q9Y616", "gene_name": "VRK3", "classification": "BIOLOGICAL_EXCEPTION (Pseudokinase)"}
+    ilk_meta = {"accession": "Q13418", "gene_name": "ILK", "classification": "BIOLOGICAL_EXCEPTION (Pseudokinase)"}
+    assert is_biological_exception(vrk3_meta) is True
+    assert is_biological_exception(ilk_meta) is True
+
+    # Verify explorer candidates return them
+    _, bio_exceptions = get_explorer_candidates()
+    ex_by_acc = {e["accession"]: e for e in bio_exceptions}
+
+    assert "Q9Y616" in ex_by_acc, "VRK3 (Q9Y616) must be accessible in biological exceptions section"
+    assert "Q13418" in ex_by_acc, "ILK (Q13418) must be accessible in biological exceptions section"
+
+    vrk3 = ex_by_acc["Q9Y616"]
+    ilk = ex_by_acc["Q13418"]
+
+    # Verify scores and priorities are preserved
+    assert vrk3["contradiction_score"] == pytest.approx(0.4537, abs=1e-3)
+    assert vrk3["priority"] == "MODERATE"
+    assert "HRD" in vrk3["motif_summary"] or "HGA" in vrk3["motif_summary"] or vrk3["variant_count"] > 0
+    assert len(vrk3["biological_caveat"]) > 0
+
+    assert ilk["contradiction_score"] == pytest.approx(0.7167, abs=1e-3)
+    assert ilk["priority"] == "HIGH"
+    assert "HRD" in ilk["motif_summary"] or "FKK" in ilk["motif_summary"] or ilk["variant_count"] > 0
+    assert len(ilk["biological_caveat"]) > 0
+
+
+# 19. Existing Benchmark Metrics, Thresholds, Labels, and Report Files Preserved
+def test_existing_benchmark_metrics_and_reports_preserved():
+    """Verify that benchmark metrics, thresholds, labels, and saved evaluation reports remain intact."""
+    rep_path = ARTIFACTS_DIR / "evaluation_report_v2.json"
+    assert rep_path.exists(), "evaluation_report_v2.json must exist"
+
+    with open(rep_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    # Thresholds preserved
+    assert data["frozen_thresholds"]["esm2_anomaly_threshold"] == 0.1814
+    assert data["frozen_thresholds"]["similarity_anomaly_threshold"] == 0.4
+    assert data["frozen_thresholds"]["feature_anomaly_threshold"] == 0.3
+    assert data["frozen_thresholds"]["ensemble_review_priority_threshold"] == "HIGH_OR_MODERATE (Score >= 0.40)"
+
+    # ESM-2 Independent test metrics preserved
+    esm_test = data["overall_independent_test_evaluation"]["methods_comparison"]["esm2_embedding_anomaly"]
+    assert esm_test["sample_size"] == 21
+    assert esm_test["false_positives"] == 1
+    assert esm_test["true_positives"] == 2
+    assert esm_test["false_negatives"] == 10
+    assert esm_test["true_negatives"] == 8
+    assert esm_test["precision_display"] == "0.6667"
+    assert esm_test["recall_display"] == "0.1667"
+    assert esm_test["f1_score_display"] == "0.2667"
+
+    # Task 3 evaluated cases preserved
+    t3 = data["task_evaluations"]["task3_natural_biological_exceptions"]["evaluated_cases"]
+    assert len(t3) == 2
+    t3_by_acc = {c["accession"]: c for c in t3}
+    assert t3_by_acc["Q9Y616"]["contradiction_score"] == 0.4537
+    assert t3_by_acc["Q9Y616"]["review_priority"] == "MODERATE"
+    assert t3_by_acc["Q13418"]["contradiction_score"] == 0.7167
+    assert t3_by_acc["Q13418"]["review_priority"] == "HIGH"
+
+
+# 20. ESM-2 Diagnostic Text Scientific Accuracy
+def test_esm2_diagnostic_text_accuracy():
+    """Verify that ui/evaluation.py accurately reflects test results without claiming zero false positives."""
+    eval_ui_path = Path("ui/evaluation.py")
+    with open(eval_ui_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Must NOT claim that false positives are not inflated or eliminated
+    assert "without inflating false positives" not in content, "Misleading false-positive claim found"
+    assert "eliminates false positives" not in content.lower()
+
+    # Must describe observed results accurately
+    assert "0.1814" in content or "{calib_thresh:.4f}" in content
+    assert "1 false positive" in content
+    assert "0.40" in content
+    assert "zero positive predictions" in content or "0.0%" in content
+    assert "does not establish reliable real-world annotation-error detection" in content
+

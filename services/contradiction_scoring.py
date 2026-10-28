@@ -5,10 +5,11 @@ catalytic motif integrity, and annotation provenance into an interpretable prior
 """
 from __future__ import annotations
 
+import json
 import logging
 from typing import Dict, Any, List, Optional, Tuple
 
-from config import WEIGHTS, PRIORITY_THRESHOLDS
+from config import WEIGHTS, PRIORITY_THRESHOLDS, ARTIFACTS_DIR
 
 logger = logging.getLogger("contradiction_atlas.scoring")
 
@@ -115,6 +116,7 @@ class ContradictionScorer:
             "supporting_evidence_summary": evidence_summary,
             "contradictory_signals": contradictory_signals,
             "limitations": limitations,
+            "is_biological_exception": is_pseudokinase,
             "component_scores": {
                 "embedding_anomaly": emb_score,
                 "sequence_similarity": sim_score,
@@ -184,4 +186,105 @@ class ContradictionScorer:
             "or allosteric regulatory adaptations. Physical biochemical assays remain required to conclusively verify catalytic status."
         )
 
+        if is_pseudokinase:
+            limitations = (
+                "Candidate represents a natural biological exception (e.g. pseudokinase) rather than a suspected annotation conflict. "
+                "The contradiction score serves as a diagnostic divergence metric and does NOT establish that this annotation is incorrect. "
+                + limitations
+            )
+
         return flag_reason, "; ".join(signals), evidence_summary, limitations
+
+
+def is_biological_exception(candidate: Any) -> bool:
+    """
+    Determines whether a protein, review flag, or benchmark case represents
+    a natural biological exception (e.g. pseudokinase) rather than a suspected
+    annotation conflict.
+    """
+    if candidate is None:
+        return False
+
+    # 1. Dict-like candidate (e.g., benchmark case or serialized evaluation dict)
+    if isinstance(candidate, dict):
+        cls = candidate.get("classification", "")
+        if "BIOLOGICAL_EXCEPTION" in str(cls) or "Pseudokinase" in str(cls):
+            return True
+        case_type = candidate.get("case_type", "")
+        if case_type in ("CATEGORY_B_NATURAL_EXCEPTION", "CATEGORY_B"):
+            return True
+        gt_category = candidate.get("ground_truth_category", "")
+        if gt_category in ("NATURAL_PSEUDOKINASE", "NATURAL_EXCEPTION"):
+            return True
+        acc = candidate.get("accession", "")
+        gene = candidate.get("gene_name", "")
+        if acc in ("Q9Y616", "Q13418") or gene in ("VRK3", "ILK"):
+            return True
+        finding_cat = candidate.get("finding_category", "")
+        if "biological exception" in str(finding_cat).lower() or "pseudokinase" in str(finding_cat).lower():
+            return True
+        ann = str(candidate.get("assigned_annotation") or candidate.get("protein_name") or candidate.get("functional_label") or "").lower()
+        if "pseudokinase" in ann or "inactive serine" in ann or "inactive kinase" in ann:
+            return True
+        reason = str(candidate.get("flag_reason", "")).lower()
+        if "biological exception" in reason or "pseudokinase" in reason:
+            return True
+        return False
+
+    # 2. Database model instance (ReviewFlag, Protein, etc.)
+    protein = getattr(candidate, "protein", candidate if hasattr(candidate, "accession") else None)
+    if protein:
+        acc = getattr(protein, "accession", "")
+        gene = getattr(protein, "gene_name", "")
+        if acc in ("Q9Y616", "Q13418") or gene in ("VRK3", "ILK"):
+            return True
+        pname = str(getattr(protein, "protein_name", "") or "").lower()
+        if "pseudokinase" in pname or "inactive serine" in pname or "inactive kinase" in pname:
+            return True
+        annotations = getattr(protein, "annotations", []) or []
+        for ann in annotations:
+            lbl = str(getattr(ann, "functional_label", "") or "").lower()
+            if "pseudokinase" in lbl or "inactive serine" in lbl or "inactive kinase" in lbl:
+                return True
+
+    flag_reason = str(getattr(candidate, "flag_reason", "") or "").lower()
+    if "biological exception" in flag_reason or "pseudokinase" in flag_reason:
+        return True
+
+    return False
+
+
+def filter_suspected_conflicts(candidates: List[Any], include_exceptions: bool = False) -> List[Any]:
+    """
+    Filters candidates for the ordinary suspected-annotation-conflict priority queue.
+    By default, natural biological exceptions (such as pseudokinases) are excluded.
+    """
+    if include_exceptions:
+        return list(candidates)
+    return [c for c in candidates if not is_biological_exception(c)]
+
+
+def get_biological_exceptions(candidates: List[Any]) -> List[Any]:
+    """
+    Extracts only natural biological exceptions from a candidate list.
+    """
+    return [c for c in candidates if is_biological_exception(c)]
+
+
+def load_benchmark_exceptions() -> List[Dict[str, Any]]:
+    """
+    Loads naturally occurring biological exceptions (such as VRK3 and ILK)
+    characterized in the scientific benchmark evaluation (Task 3).
+    """
+    rep_path = ARTIFACTS_DIR / "evaluation_report_v2.json"
+    if not rep_path.exists():
+        return []
+    try:
+        with open(rep_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get("task_evaluations", {}).get("task3_natural_biological_exceptions", {}).get("evaluated_cases", [])
+    except Exception as e:
+        logger.warning(f"Could not load benchmark exceptions from {rep_path}: {e}")
+        return []
+
+

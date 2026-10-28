@@ -259,17 +259,18 @@ def render_evaluation():
         t3_cases = report_v2.get("task_evaluations", {}).get("task3_natural_biological_exceptions", {}).get("evaluated_cases", [])
         if t3_cases:
             for item in t3_cases:
-                with st.expander(f"🧬 {item.get('gene_name')} ({item.get('accession')}) — Priority: {item.get('review_priority')}", expanded=True):
+                with st.expander(f"🧬 {item.get('gene_name')} ({item.get('accession')}) — Characterization Priority: {item.get('review_priority')} [Biological Exception]", expanded=True):
                     c1, c2 = st.columns([1, 1])
                     with c1:
                         st.markdown(f"**Assigned Annotation:** {item.get('assigned_annotation')}")
                         st.markdown(f"**Classification:** `{item.get('classification')}`")
-                        st.markdown(f"**Contradiction Score:** `{item.get('contradiction_score'):.3f}`")
+                        st.markdown(f"**Diagnostic Contradiction Score:** `{item.get('contradiction_score'):.4f}` *(Diagnostic score; does NOT establish an annotation error)*")
                     with c2:
                         motifs = item.get("detected_motifs", {})
                         st.markdown(f"**Motif Summary:** {motifs.get('summary')}")
                         st.markdown(f"- Canonical Motifs: `{motifs.get('canonical')}` &bull; Variant Motifs: `{motifs.get('variant')}`")
                     st.warning(f"**Scientific Caveat:** {item.get('biological_caveat')}")
+                    st.caption("ℹ️ *Note: Priority reflects degree of structural divergence requiring characterization, not the probability that this biological exception is misannotated.*")
 
     with tab_t4:
         st.markdown("### Task 4: Real-World Public Database Limitations")
@@ -325,11 +326,13 @@ def render_evaluation():
             fig_sweep.update_layout(height=280, margin=dict(l=20, r=20, t=30, b=20))
             st.plotly_chart(fig_sweep, use_container_width=True)
 
+        calib_thresh = diagnostics.get("current_anomaly_threshold", 0.1814)
         st.info(
-            f"📌 **Root Cause Analysis:** Notice that at threshold $\\ge 0.40$, positive predictions drop to **0.0%**. "
-            f"The original baseline threshold of $0.50$ only triggered on non-homologous peptides. "
-            f"In contrast, the calibrated threshold (`{diagnostics.get('current_anomaly_threshold'):.4f}`) "
-            f"captures class-conditioned manifold discordances without inflating false positives."
+            f"📌 **Root Cause Analysis:** The calibrated threshold is `{calib_thresh:.4f}`. "
+            f"On the independent test set, this threshold reports 1 false positive (along with 2 true positives and 10 false negatives). "
+            f"Higher thresholds reduce the number of positive predictions, and at thresholds $\\ge 0.40$ the diagnostic sweep shows "
+            f"zero positive predictions (0.0%). Consequently, while the calibrated threshold allows detection of class-conditioned "
+            f"manifold discordance, the current evaluation does not establish reliable real-world annotation-error detection."
         )
 
     st.markdown("---")

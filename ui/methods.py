@@ -115,6 +115,7 @@ def render_methods():
     > **Scientific Safeguards:**
     > 1. *Low annotation confidence alone cannot trigger a HIGH priority flag if sequence features and embeddings are canonical.*
     > 2. *An unusual embedding alone cannot prove that a functional label is wrong; it is labeled as a divergent variant candidate.*
+    > 3. *Natural biological exceptions (pseudokinases) are separated from ordinary suspected annotation conflicts. Contradiction scores serve as diagnostic divergence metrics and do not establish that an annotation is incorrect.*
     """)
 
     st.markdown("---")

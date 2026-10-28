@@ -12,6 +12,7 @@ from sqlalchemy import or_, desc, asc
 from database.connection import get_db_session
 from database.models import Protein, ReviewFlag
 from services.reporting import ReportingService
+from services.contradiction_scoring import is_biological_exception
 from ui.styles import render_priority_badge
 
 
@@ -111,6 +112,7 @@ def render_protein_explorer():
         table_rows = []
         for p in results:
             flag = p.review_flags[0] if p.review_flags else None
+            is_bio = is_biological_exception(flag) or is_biological_exception(p)
             prio = flag.review_priority if flag else "PENDING"
             score = f"{flag.contradiction_score:.2f}" if flag else "N/A"
             table_rows.append({
@@ -119,8 +121,9 @@ def render_protein_explorer():
                 "Protein Name": p.protein_name,
                 "Length (aa)": p.sequence_length,
                 "Status": "Reviewed" if p.reviewed else "Unreviewed",
-                "Priority": prio,
-                "Score": score,
+                "Category": "Biological Exception" if is_bio else "Standard Kinase",
+                "Priority": f"{prio} [Exception]" if is_bio and prio != "PENDING" else prio,
+                "Score": f"{score} (Diag)" if is_bio and score != "N/A" else score,
             })
 
         df_display = pd.DataFrame(table_rows)

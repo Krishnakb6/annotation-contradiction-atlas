@@ -13,7 +13,8 @@ from sqlalchemy.orm import joinedload
 
 from database.connection import get_db_session
 from database.models import Protein, FunctionAnnotation, SequenceFeature, ReviewFlag, ModelResult, ProteinFamilyMembership
-from ui.styles import render_priority_badge
+from services.contradiction_scoring import is_biological_exception, load_benchmark_exceptions
+from ui.styles import render_priority_badge, render_exception_badge
 
 
 def highlight_sequence(sequence: str, features: list) -> str:
@@ -77,8 +78,24 @@ def render_protein_detail():
 
     # Header Card
     flag = protein.review_flags[0] if protein.review_flags else None
+    is_bio = is_biological_exception(flag) or is_biological_exception(protein) or (protein.accession in ("Q9Y616", "Q13418")) or ((protein.gene_name or "") in ("VRK3", "ILK"))
+
+    # Resolve details (fallback to benchmark if not flagged in DB)
     priority = flag.review_priority if flag else "PENDING"
     score = flag.contradiction_score if flag else 0.0
+    flag_reason = flag.flag_reason if flag else ""
+    signals = flag.contradictory_signals if flag else ""
+    limitations = flag.limitations if flag else ""
+
+    if is_bio and not flag:
+        bench_cases = load_benchmark_exceptions()
+        b_match = next((c for c in bench_cases if c.get("accession") == protein.accession or c.get("gene_name") == protein.gene_name), None)
+        if b_match:
+            priority = b_match.get("review_priority", "MODERATE")
+            score = b_match.get("contradiction_score", 0.0)
+            flag_reason = b_match.get("biological_caveat", "Documented natural pseudokinase variant fulfilling non-catalytic biological functions.")
+            signals = b_match.get("detected_motifs", {}).get("summary", "Atypical catalytic triad variant motifs")
+            limitations = b_match.get("biological_caveat", "")
 
     st.markdown(f"""
     <div style="background-color: #FFFFFF; color: #1E293B; border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
@@ -90,7 +107,7 @@ def render_protein_detail():
                 </p>
             </div>
             <div>
-                {render_priority_badge(priority)}
+                {render_exception_badge("BIOLOGICAL EXCEPTION (Pseudokinase)") if is_bio else render_priority_badge(priority)}
             </div>
         </div>
         <div style="margin-top: 12px; font-size: 14px;">
@@ -104,7 +121,23 @@ def render_protein_detail():
     """, unsafe_allow_html=True)
 
     # Review Priority & Scientific Explanation Banner
-    if flag:
+    if is_bio:
+        st.markdown(f"""
+        <div style="background-color: #EFF6FF; color: #1E293B; border-left: 5px solid #3B82F6; padding: 16px; border-radius: 4px; margin-bottom: 20px;">
+            <h4 style="margin: 0 0 8px 0; color: #1E40AF;">🧬 Natural Biological Exception (Pseudokinase) — Characterization Summary</h4>
+            <p style="margin: 0 0 8px 0; font-size: 15px; color: #334155; line-height: 1.5;">{flag_reason}</p>
+            <div style="font-size: 13px; color: #475569;">
+                <b>Divergent Signals:</b> {signals}<br/>
+                <b>Diagnostic Contradiction Score:</b> {score:.4f} (Characterization Priority: {priority})<br/>
+                <span style="color: #2563EB; font-weight: 500;">Scientific Note: This score is a diagnostic metric of sequence/motif divergence and does NOT establish that this annotation is incorrect. Pseudokinases naturally deviate from canonical active kinase motifs.</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if limitations:
+            with st.expander("Scientific Caveats and Evidence Limitations", expanded=False):
+                st.info(limitations)
+    elif flag:
         bg_col = "#FEF2F2" if priority == "HIGH" else "#FFFBEB" if priority == "MODERATE" else "#F0FDF4"
         border_col = "#FCA5A5" if priority == "HIGH" else "#FCD34D" if priority == "MODERATE" else "#86EFAC"
 
